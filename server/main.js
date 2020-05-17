@@ -15,3 +15,14 @@ Meteor.startup(function() {
   }
 });
 
+const request = require('request');
+const cheerio = require('cheerio');
+
+request.get('https://www.lexico.com/en/definition/car', function (err, httpResponse, html) {
+  const $ = cheerio.load(html) // 이거 필수임
+  // console.log(html)
+  // console.log($('div.entryGroup').html())
+
+  console.log($('div.entryWrapper section ul li div p span.ind').html()) // 원하는 단어 뽑아오는 코드
+
+})
