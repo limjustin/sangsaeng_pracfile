@@ -31,7 +31,7 @@ Template.main.events({
     // event.preventDefault();
     // Meteor.call('callingServer');
     // alert("nice")
-    var arg = 'pig';
+    var arg = $('#inp-word').val();
 
     // 두 번째 호출 방법 - Asynchronous call
     Meteor.call('future', arg, function (error, result) {
