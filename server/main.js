@@ -15,60 +15,45 @@ Meteor.startup(function() {
 
   }
 });
-// Future = Npm.require('fibers/future'); // future fibers 보류
+
 const request = require('request');
 const cheerio = require('cheerio');
-
-// request.get('https://www.lexico.com/en/definition/car', function (err, httpResponse, html) {
-//   const $ = cheerio.load(html) // 이거 필수임
-//   // console.log(html)
-//   // console.log($('div.entryGroup').html())
-//
-//   console.log($('div.entryWrapper section ul li div p span.ind').html()) // 원하는 단어 뽑아오는 코드
-//
-// })
+Future = Npm.require('fibers/future');
 
 Meteor.methods({
-  'callingServer': function(){
-    // console.log("Hello world!!");
-    // // Calling Server
 
+  // 'callingServer': function(){
+  //
+  //   request.get('https://www.lexico.com/en/definition/car', Meteor.bindEnvironment (function(err, response, html) {
+  //     const $ = cheerio.load(html); // 이거 필수임
+  //     const meaning = $('div.entryWrapper section ul li div p span.ind').html();
+  //     // console.log("Server is live");
+  //     console.log(meaning);
+  //   }))
+  //
+  // },
 
-    request.get('https://www.lexico.com/en/definition/car', Meteor.bindEnvironment (function(err, response, html) {
-      const $ = cheerio.load(html); // 이거 필수임
-      const meaning = $('div.entryWrapper section ul li div p span.ind').html();
-      console.log("Server is live");
-      console.log(meaning);
-      return Promise.resolve(meaning); // 이거 잘 안됨
-      // return meaning;
+  'future':function(args) {
+    // console.log('future start:'+Date.now());
+    const fut = new Future();
+    const newarg = args;
 
-      // 확인용 콘솔
-      // console.log($('div.entryWrapper section ul li div p span.ind').html()) // 원하는 단어 뽑아오는 코드
+    Meteor.setTimeout(function(argumentString) {
+      // console.log('callback end:'+Date.now());
+      var link = 'https://www.lexico.com/en/definition/' + newarg;
+      request.get(link, function (err, response, html) {
+        const $ = cheerio.load(html);
+        const meaning = $('div.entryWrapper section ul li div p span.ind').html();
+        console.log(link);
+        console.log(newarg);
+        console.log(meaning);
+        fut.return(meaning);
+      })
+      // fut.return('yahoo:'+Date.now());
+    }, 1000);
 
-      // return $('div.entryWrapper section ul li div p span.ind').html();
+    // console.log('future end:'+Date.now());
+    return fut.wait();
+  }
 
-      // // 단어 저장 DB
-      // DB_WORDS.insert({
-      //   word: 'car',
-      //   meaning: meaning
-      // })
-
-      // // Meteor.call() 에서는 return 안 되나 보네,,,
-      // var meaning = $('div.entryWrapper section ul li div p span.ind').html();
-      // return meaning;
-    }))
-
-    // var future = new Future();
-    // var url = 'https://www.lexico.com/en/definition/car';
-    //
-    // HTTP.get(url,{},function (error,result) {
-    //     if(!error) {
-    //       future.return("hihi");
-    //     } else {
-    //       future.return(error);
-    //     }
-    // });
-    //
-    // return future.wait();
-  },
 });
