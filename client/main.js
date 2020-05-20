@@ -33,6 +33,8 @@ Template.main.events({
       if(error) {
         alert('Error');
       } else{
+        result = result.replace(/<b>/g, '');
+        result = result.replace(/<\/b>/g, '');
         Session.set('data', result);
         console.log(Session.get('data'));
       }
