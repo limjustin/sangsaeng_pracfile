@@ -26,15 +26,10 @@ Template.main.events({
   // 화면의 이벤트를 처리
   'click #btn-count': function(event) {
     // Session.set('count', Session.get('count')+1);
+    var arg = $('#inp-word').val(); // input 창에 입력된 단어 가져오기
 
-    // // 첫 번째 호출 방법
-    // event.preventDefault();
-    // Meteor.call('callingServer');
-    // alert("nice")
-    var arg = $('#inp-word').val();
-
-    // 두 번째 호출 방법 - Asynchronous call
-    Meteor.call('future', arg, function (error, result) {
+    // callback 함수를 이용해서 Meteor.call() 호출
+    Meteor.call('word_searching', arg, function (error, result) {
       if(error) {
         alert('Error');
       } else{
@@ -43,15 +38,5 @@ Template.main.events({
       }
     })
 
-    // // Synchronous Call
-    // const result = Meteor.call('callingServer');
-    // console.log("Hi" + result);
-
-    // var clientResult = Meteor.apply('callingServer', [], {returnStubValue: true});
-    // Session.set('result', clientResult);
-
-    // Meteor.call('callingServer', function (err,result) {console.log(result)});
-
   }
-
 });

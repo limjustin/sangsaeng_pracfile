@@ -16,44 +16,30 @@ Meteor.startup(function() {
   }
 });
 
-const request = require('request');
-const cheerio = require('cheerio');
-Future = Npm.require('fibers/future');
+const request = require('request'); // request
+const cheerio = require('cheerio'); // cheerio
+Future = Npm.require('fibers/future'); // fibers/future
 
 Meteor.methods({
 
-  // 'callingServer': function(){
-  //
-  //   request.get('https://www.lexico.com/en/definition/car', Meteor.bindEnvironment (function(err, response, html) {
-  //     const $ = cheerio.load(html); // 이거 필수임
-  //     const meaning = $('div.entryWrapper section ul li div p span.ind').html();
-  //     // console.log("Server is live");
-  //     console.log(meaning);
-  //   }))
-  //
-  // },
+  'word_searching':function(args) {
 
-  'future':function(args) {
-    // console.log('future start:'+Date.now());
-    const fut = new Future();
-    const newarg = args;
+    const fut = new Future(); // Future 객체 생성
+    const word = args; // 받아온 인자 값을 word 변수에 저장
 
-    Meteor.setTimeout(function(argumentString) {
-      // console.log('callback end:'+Date.now());
-      var link = 'https://www.lexico.com/en/definition/' + newarg;
+    Meteor.setTimeout(function() {
+      var link = 'https://www.lexico.com/en/definition/' + word;
       request.get(link, function (err, response, html) {
-        const $ = cheerio.load(html);
-        const meaning = $('div.entryWrapper section ul li div p span.ind').html();
-        console.log(link);
-        console.log(newarg);
-        console.log(meaning);
-        fut.return(meaning);
+        const $ = cheerio.load(html); // 해당하는 사이트에 있는 모든 html 코드를 crawling
+        const meaning = $('div.entryWrapper section ul li div p span.ind').html(); // 내가 원하는 부분만 찾아감
+        console.log(link); // 새로운 링크 잘 연결 되었는가??
+        console.log(word); // 인자 값 잘 가져왔는가??
+        console.log(meaning); // 뜻이 잘 나오는가??
+        fut.return(meaning); // client로 값 return
       })
-      // fut.return('yahoo:'+Date.now());
     }, 1000);
+    return fut.wait(); // async? sync?
 
-    // console.log('future end:'+Date.now());
-    return fut.wait();
   }
 
 });
