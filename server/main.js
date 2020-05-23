@@ -5,8 +5,6 @@ const cheerio = require('cheerio'); // cheerio
 const sanitizeHtml = require('sanitize-html');
 Future = Npm.require('fibers/future'); // fibers/future
 
-
-
 Meteor.methods({
 
   'word_searching':function(args) {
@@ -23,8 +21,6 @@ Meteor.methods({
             decodeEntities: true
           }
         });
-        // meaning.replace(/<b>/gi,'')
-        // meaning.replace(/<\/b>/gi,'')
         // console.log(link); // 새로운 링크 잘 연결 되었는가??
         // console.log(word); // 인자 값 잘 가져왔는가??
         // console.log(meaning); // 뜻이 잘 나오는가??
