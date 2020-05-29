@@ -14,8 +14,15 @@ Meteor.methods({
       // var link = 'http://aha-dic.com/View.asp?word=' + word;
       request.get(link, function (err, response, html) {
         const $ = cheerio.load(html,{decodeEntities: true});
+
+        // article이 기사 가져오는거 -> 성공
         article = sanitizeHtml($('div.view_article div div div span').html(),{ parser: {decodeEntities: true}});
         console.log(article)
+
+        // picsrc가 사진 가져오려는거 -> 아직 성공 아님
+        picsrc = sanitizeHtml($('div.view_article div div div table').html(),{ parser: {decodeEntities: true}});
+        console.log("picsrc: " + picsrc)
+
         // const wordmeaning =new Array();
         // wordmeaning[0] = sanitizeHtml($('ul li').html(),{ parser: {decodeEntities: true}});
         // wordmeaning[1] = sanitizeHtml($('fieldset.panel span').html(), { parser: {decodeEntities: true}});

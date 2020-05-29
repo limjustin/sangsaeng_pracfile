@@ -4,6 +4,8 @@ Template.main.onRendered(function() {
   // 화면이 그려지고 난 후 제일 먼저 수행
   Session.set('count', 0);
   Session.set('data', " ");
+  Session.set('enter_aritcle', []);
+
 });
 
 Template.main.helpers({
@@ -18,7 +20,12 @@ Template.main.helpers({
   },
 
   link: function () {
-    return Session.get('data');
+    var arr = Session.get('enter_article');
+    // console.log("arr: " + arr);
+    for(var i = 0; i < arr.length; i++) {
+      document.write(arr[i] + "<br>");
+    }
+    // return arr;
   }
 });
 
@@ -33,8 +40,13 @@ Template.main.events({
       if(error) {
         alert('Error');
       } else{
-        result = result.replace(/<br>/g, '');
-        result = result.replace(/<br \/>/g, '');
+        // result = result.replace(/<br>/g, '');
+        // result = result.replace(/<br \/>/g, '');
+        // var entering = new Array();
+        var entering = result.split('<br>');
+        Session.set('enter_article', entering);
+        console.log(entering[1]);
+        console.log(entering);
         Session.set('data', result);
         console.log(Session.get('data'));
       }
