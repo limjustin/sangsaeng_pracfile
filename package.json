@@ -17,7 +17,7 @@
     "fibers": "^5.0.0",
     "gridfs-stream": "^1.1.1",
     "meteor-node-stubs": "^0.4.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "request": "^2.88.2",
     "sanitize-html": "^1.23.0",
     "simpl-schema": "^1.7.2"
